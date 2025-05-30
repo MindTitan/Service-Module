@@ -35,7 +35,7 @@ assign_service_ids:
 get_services_by_ids:
   call: http.get
   args:
-    url: "[#SERVICE_RESQL]/service/get_services_by_ids"
+    url: "[#SERVICE_RESQL]/service/list_services_by_ids"
     query:
       # Converting to string to prevent issues with Resql
       serviceIds: ${service_ids.filter((id) => id !== incoming.params.excludedServiceId).join(",")}
