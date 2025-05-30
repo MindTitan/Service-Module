@@ -32,15 +32,12 @@ declaration:
         type: string
         enum: ['GET', 'POST']
         description: "Ruuter type associated with the service"
-      - field: isCommon
+      - field: is_common
         type: boolean
         description: "Indicates whether the service is common"
       - field: structure
         type: object
         description: "JSON structure defining the service"
-      - field: endpoints
-        type: array
-        description: "Combined list of common and service-specific endpoints in JSON format"
       - field: service_id
         type: string
         description: "Identifier linking this service to its group"
@@ -58,26 +55,10 @@ SELECT
   slot,
   current_state AS state,
   ruuter_type AS type,
-  is_common AS isCommon,
+  is_common,
   structure::json,
-  subquery.endpoints::json AS endpoints,
   service_id
 FROM services
 JOIN MaxService ON id = maxId
-JOIN (
-  SELECT jsonb_agg(endpoint) AS endpoints
-  FROM (
-    SELECT DISTINCT endpoint
-    FROM (
-      SELECT endpoint::jsonb
-      FROM services, json_array_elements(endpoints) AS endpoint
-      WHERE (endpoint->>'isCommon')::boolean = true
-      UNION
-      SELECT endpoint::jsonb
-      FROM services, json_array_elements(endpoints) AS endpoint, MaxService
-      WHERE id = maxId
-    ) AS combined_endpoints
-  ) subquery
-) subquery ON true
 WHERE NOT deleted
 ORDER BY id ASC;
