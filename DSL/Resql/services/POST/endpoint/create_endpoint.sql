@@ -1,3 +1,38 @@
+/*
+declaration:
+  version: 0.1
+  description: "Create a new endpoint, optionally linking it to a specific service if not marked as common"
+  method: post
+  namespace: endpoint
+  accepts: json
+  returns: json
+  allowlist:
+    body:
+      - field: endpointId
+        type: string
+        description: "Unique UUID for the endpoint"
+      - field: serviceId
+        type: string
+        description: "Service ID to link the endpoint to (used only if isCommon is false)"
+      - field: name
+        type: string
+        description: "Name of the endpoint"
+      - field: type
+        type: string
+        enum: ['openApi', 'custom']
+        description: "Type/category of the endpoint"
+      - field: fileName
+        type: string
+        description: "File name associated with the endpoint"
+      - field: isCommon
+        type: boolean
+        description: "Whether the endpoint is common across services"
+      - field: definitions
+        type: object
+        description: "JSONB object defining the endpoint behavior or structure"
+  response:
+    fields: []
+*/
 INSERT INTO endpoints (
     endpoint_id,
     service_ids,

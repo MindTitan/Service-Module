@@ -1,3 +1,20 @@
+/*
+declaration:
+  version: 0.1
+  description: "Soft-delete the latest version of all non-common endpoints linked to a given service"
+  method: post
+  namespace: endpoint
+  returns: json
+  accepts: json
+  allowlist:
+    body:
+      - field: serviceId
+        type: string
+        description: "Service ID whose associated non-common endpoints should be soft-deleted"
+  response:
+    fields: []
+*/
+
 WITH latest_endpoints AS (
     SELECT DISTINCT ON (endpoint_id) *
     FROM endpoints

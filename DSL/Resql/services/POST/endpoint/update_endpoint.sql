@@ -1,3 +1,37 @@
+/*
+declaration:
+  version: 0.1
+  description: "Insert a new version of an endpoint, appending a service ID to the existing service list if present"
+  method: post
+  namespace: auth_users
+  returns: json
+  allowlist:
+    query:
+      - field: endpointId
+        type: string
+        description: "UUID of the endpoint to extend"
+      - field: serviceId
+        type: string
+        description: "Service ID to add to the endpoint's service_ids list"
+      - field: name
+        type: string
+        description: "Name of the endpoint"
+      - field: type
+        type: string
+        enum: ['openApi', 'custom']
+        description: "Type of the endpoint"
+      - field: fileName
+        type: string
+        description: "Name of the file associated with the endpoint"
+      - field: isCommon
+        type: boolean
+        description: "Indicates if the endpoint is marked as common"
+      - field: definitions
+        type: object
+        description: "JSONB object containing the endpoint's definition"
+  response:
+    fields: []
+*/
 WITH existing AS (
   SELECT service_ids FROM endpoints WHERE endpoint_id = :endpointId::uuid ORDER BY created_at DESC LIMIT 1
 )
